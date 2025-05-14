@@ -34,9 +34,8 @@ public class StudentService
         this.studentRepository.deleteById(StudentId);
     }
 
-    public Student updateStudent(Student student){
-        Student existingStudent = this.getStudentById(student.getId());
-        if (existingStudent == null) return null;
+    public Student updateStudent(Student student, long studentId){
+        Student existingStudent = this.getStudentById(studentId);
         existingStudent.setFname(student.getFname());
         existingStudent.setLname(student.getLname());
         return studentRepository.save(existingStudent);

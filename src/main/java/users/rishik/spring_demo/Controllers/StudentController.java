@@ -38,7 +38,8 @@ public class StudentController {
     @PutMapping("/student/update/{StudentId}")
     public Student updateStudent(@PathVariable long StudentId, @RequestBody Student student)
     {
-        if (StudentId != student.getId()) return null;
-        return this.studentService.updateStudent(student);
+        Student existingStudent = this.getStudentById(StudentId);
+        if (existingStudent == null) return null;
+        return this.studentService.updateStudent(student, StudentId);
     }
 }
