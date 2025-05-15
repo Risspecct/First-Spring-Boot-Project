@@ -7,5 +7,4 @@ import users.rishik.spring_demo.entities.Student;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long>
 {
-
 }

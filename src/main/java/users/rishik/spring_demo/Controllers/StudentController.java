@@ -1,13 +1,14 @@
 package users.rishik.spring_demo.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import users.rishik.spring_demo.entities.Student;
 import users.rishik.spring_demo.services.StudentService;
 
-import java.util.Optional;
-
 @RestController
+@RequestMapping("/student")
 public class StudentController {
     private final StudentService studentService;
 
@@ -17,29 +18,29 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @PostMapping("/student/add")
+    @PostMapping("/add")
     public Student addStudent(@RequestBody Student student)
     {
         return this.studentService.addStudent(student);
     }
 
-    @GetMapping("/student/find/{sid}")
+    @GetMapping("/find/{sid}")
     public Student getStudentById(@PathVariable(name="sid") long StudentId)
     {
         return this.studentService.getStudentById(StudentId);
     }
 
-    @DeleteMapping("/student/delete/{StudentId}")
-    public void deleteStudentById(@PathVariable long StudentId)
+    @DeleteMapping("/delete/{studentId}")
+    public void deleteStudentById(@PathVariable long studentId)
     {
-        this.studentService.deleteStudentById(StudentId);
+        this.studentService.deleteStudentById(studentId);
     }
 
-    @PutMapping("/student/update/{StudentId}")
-    public Student updateStudent(@PathVariable long StudentId, @RequestBody Student student)
+    @PutMapping("/update/{studentId}")
+    public Student updateStudent(@PathVariable long studentId, @RequestBody Student student)
     {
-        Student existingStudent = this.getStudentById(StudentId);
-        if (existingStudent == null) return null;
-        return this.studentService.updateStudent(student, StudentId);
+        Student existingStudent = this.getStudentById(studentId);
+        if (existingStudent == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found");
+        return this.studentService.updateStudent(student, studentId);
     }
 }
