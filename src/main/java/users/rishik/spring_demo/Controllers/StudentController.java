@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import users.rishik.spring_demo.entities.Student;
-import users.rishik.spring_demo.exceptions.StudentNotFoundException;
+import users.rishik.spring_demo.exceptions.NotFoundException;
 import users.rishik.spring_demo.services.StudentService;
 
 import java.util.Map;
@@ -37,7 +37,7 @@ public class StudentController {
         try {
             Student student = this.studentService.getStudentById(StudentId);
             return ResponseEntity.ok(student);
-        } catch (StudentNotFoundException e) {
+        } catch (NotFoundException e) {
             return new ResponseEntity<>(Map.of("Message", e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception a) {
             return ResponseEntity.internalServerError().body(Map.of("Error", a.getMessage()));
@@ -60,7 +60,7 @@ public class StudentController {
         try {
             Student updatedStudent = this.studentService.updateStudent(student, studentId);
             return ResponseEntity.ok(updatedStudent);
-        } catch (StudentNotFoundException e) {
+        } catch (NotFoundException e) {
             return new ResponseEntity<>(Map.of("Message", e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception a) {
             return ResponseEntity.internalServerError().body(Map.of("Error", a.getMessage()));

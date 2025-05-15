@@ -1,9 +1,13 @@
 package users.rishik.spring_demo.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
-
+@Getter
+@Setter
 @Entity
 @Table(name = "student") //Optional because otherwise it takes class name as table name
 public class Student{
@@ -20,30 +24,11 @@ public class Student{
     @NotBlank(message = "Last name must not be null")
     private String lname;
 
-    public long getId() {
-        return id;
-    }
+    @Column(name = "email", nullable = false, unique = true)
+    @Email
+    private String email;
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    // Getter and Setter for fname
-    public String getFname() {
-        return fname;
-    }
-
-    public void setFname(String fname) {
-        this.fname = fname;
-    }
-
-    // Getter and Setter for lname
-    public String getLname() {
-        return lname;
-    }
-
-    public void setLname(String lname) {
-        this.lname = lname;
-    }
+    @Column(name = "password", nullable = false)
+    private String password;
 }
 
