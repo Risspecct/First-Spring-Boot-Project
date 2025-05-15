@@ -3,6 +3,7 @@ package users.rishik.spring_demo.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import users.rishik.spring_demo.entities.Student;
+import users.rishik.spring_demo.exceptions.StudentNotFoundException;
 import users.rishik.spring_demo.respositories.StudentRepository;
 
 import java.util.Optional;
@@ -26,7 +27,9 @@ public class StudentService
     public Student getStudentById(long StudentId)
     {
         Optional<Student> optionalVal = this.studentRepository.findById(StudentId);
-        return optionalVal.orElse(null);
+        return optionalVal.orElseThrow(() -> {
+            return new StudentNotFoundException("Student with id: " + StudentId + " not found");
+        });
     }
 
     public void deleteStudentById(long StudentId)

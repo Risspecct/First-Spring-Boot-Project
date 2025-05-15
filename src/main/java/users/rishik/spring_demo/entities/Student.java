@@ -1,6 +1,7 @@
 package users.rishik.spring_demo.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 
 @Entity
@@ -12,9 +13,11 @@ public class Student{
     private long id;
 
     @Column(name = "first_name", nullable = false)
+    @NotBlank(message = "First name must not be null")
     private String fname;
 
     @Column(name = "last_name", nullable = false)
+    @NotBlank(message = "Last name must not be null")
     private String lname;
 
     public long getId() {
