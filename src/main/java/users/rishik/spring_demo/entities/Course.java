@@ -22,16 +22,12 @@ public class Course {
     private String name;
 
     @Column(name="price", nullable = false)
-    @Min(0)
     private double price;
 
     @Column(name="capacity", nullable = false)
-    @Min(10)
     private int capacity;
 
     @Column(name="No_Of_Days", nullable = false)
-    @Min(3)
-    @Max(60)
     private int noOfDays;
 
     @Column(name = "Start_Date", nullable = false)

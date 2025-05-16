@@ -23,9 +23,7 @@ public class CoursesService {
 
     public Course getcourse(long courseId){
         Optional<Course> course = this.coursesRepository.findById(courseId);
-        return course.orElseThrow(() -> {
-            return new NotFoundException("Course with id: " + courseId + " not found");
-        });
+        return course.orElseThrow(() -> new NotFoundException("Course with id: " + courseId + " not found"));
     }
 
     public void deleteCourse(long courseId){

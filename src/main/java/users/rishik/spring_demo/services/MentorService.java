@@ -4,16 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import users.rishik.spring_demo.entities.Mentor;
 import users.rishik.spring_demo.exceptions.NotFoundException;
-import users.rishik.spring_demo.respositories.Mentorrepository;
+import users.rishik.spring_demo.respositories.MentorRepository;
 
 import java.util.Optional;
 
 @Service
 public class MentorService {
-    private final Mentorrepository mentorRepository;
+    private final MentorRepository mentorRepository;
 
     @Autowired
-    public MentorService(Mentorrepository mentorRepository){
+    public MentorService(MentorRepository mentorRepository){
         this.mentorRepository = mentorRepository;
     }
 

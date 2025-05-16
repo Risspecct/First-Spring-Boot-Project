@@ -1,11 +1,14 @@
 package users.rishik.spring_demo.Controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import users.rishik.spring_demo.dto.CourseDto;
 import users.rishik.spring_demo.entities.Course;
 import users.rishik.spring_demo.exceptions.NotFoundException;
+import users.rishik.spring_demo.mappers.CourseMapper;
 import users.rishik.spring_demo.services.CoursesService;
 
 import java.util.Map;
@@ -14,16 +17,19 @@ import java.util.Map;
 @RequestMapping("/courses")
 public class CoursesController {
     private final CoursesService coursesService;
+    private final CourseMapper courseMapper;
 
     @Autowired
-    public CoursesController(CoursesService coursesService) {
+    public CoursesController(CoursesService coursesService, CourseMapper courseMapper) {
         this.coursesService = coursesService;
+        this.courseMapper = courseMapper;
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody Course course){
+    public ResponseEntity<?> add(@RequestBody @Valid CourseDto courseDto){
         try {
-        return new ResponseEntity<>(this.coursesService.addCourse(course), HttpStatus.CREATED);
+            Course course = this.courseMapper.mapToModel(courseDto);
+            return new ResponseEntity<>(this.coursesService.addCourse(course), HttpStatus.CREATED);
         } catch (Exception e){
             return ResponseEntity.internalServerError().body(Map.of("Error", e.getMessage()));
         }
