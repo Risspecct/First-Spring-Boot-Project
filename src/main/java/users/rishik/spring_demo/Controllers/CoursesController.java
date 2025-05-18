@@ -46,11 +46,23 @@ public class CoursesController {
         }
     }
 
-    @DeleteMapping("/delete//{courseId}")
+    @DeleteMapping("/delete/{courseId}")
     public ResponseEntity<?>  deleteById(@PathVariable long courseId){
         try {
             this.coursesService.deleteCourse(courseId);
             return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/update/{courseId}")
+    public ResponseEntity<?> updateCourse(@RequestBody @Valid  CourseDto dto,@PathVariable long courseId){
+        try {
+            Course course = this.courseMapper.mapToModel(dto);
+            return new ResponseEntity<>(this.coursesService.updateCourse(course, courseId), HttpStatus.ACCEPTED);
+    } catch (NotFoundException e){
+            return new ResponseEntity<>(Map.of("Error", e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }

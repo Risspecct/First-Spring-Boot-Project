@@ -30,4 +30,17 @@ public class CoursesService {
         this.coursesRepository.deleteById(courseId);
     }
 
+    public Course updateCourse(Course course, long courseId){
+        Course course1 = this.getcourse(courseId);
+        course1.setId(courseId);
+        course1.setName(course.getName());
+        course1.setCapacity(course.getCapacity());
+        course1.setStartDate(course.getStartDate());
+        course1.setPrice(course.getPrice());
+        course1.setMentor(course.getMentor());
+        course1.setNoOfDays(course.getNoOfDays());
+        course1.setDescription(course.getDescription());
+        return this.coursesRepository.save(course1);
+    }
+
 }
