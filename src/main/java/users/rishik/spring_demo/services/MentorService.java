@@ -6,6 +6,7 @@ import users.rishik.spring_demo.entities.Mentor;
 import users.rishik.spring_demo.exceptions.NotFoundException;
 import users.rishik.spring_demo.respositories.MentorRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +27,10 @@ public class MentorService {
         return mentor.orElseThrow(() -> {
             return new NotFoundException("Couln'd find mentor with id: " + mentorId);
         });
+    }
+
+    public List<Mentor> addAllMentor(List<Mentor> mentors){
+        return this.mentorRepository.saveAll(mentors);
     }
 
     public Mentor updateMentor(long mentorId, Mentor mentor){

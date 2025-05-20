@@ -6,6 +6,7 @@ import users.rishik.spring_demo.entities.Course;
 import users.rishik.spring_demo.exceptions.NotFoundException;
 import users.rishik.spring_demo.respositories.CoursesRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +20,10 @@ public class CoursesService {
 
     public Course addCourse(Course course){
         return this.coursesRepository.save(course);
+    }
+
+    public List<Course> addAllCourses(List<Course> courses){
+        return this.coursesRepository.saveAll(courses);
     }
 
     public Course getcourse(long courseId){

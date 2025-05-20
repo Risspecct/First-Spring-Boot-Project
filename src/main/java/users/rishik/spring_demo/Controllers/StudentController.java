@@ -9,6 +9,7 @@ import users.rishik.spring_demo.entities.Student;
 import users.rishik.spring_demo.exceptions.NotFoundException;
 import users.rishik.spring_demo.services.StudentService;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -27,6 +28,15 @@ public class StudentController {
     {
         try{
             return ResponseEntity.ok(this.studentService.addStudent(student));
+        } catch (Exception e){
+            return ResponseEntity.internalServerError().body(Map.of("Message", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/addAll")
+    public ResponseEntity<?> addAllStudents(@RequestBody List<Student> students){
+        try{
+            return ResponseEntity.ok(this.studentService.addAllStudents(students));
         } catch (Exception e){
             return ResponseEntity.internalServerError().body(Map.of("Message", e.getMessage()));
         }

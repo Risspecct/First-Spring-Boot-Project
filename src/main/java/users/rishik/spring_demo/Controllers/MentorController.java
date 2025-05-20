@@ -9,6 +9,7 @@ import users.rishik.spring_demo.entities.Mentor;
 import users.rishik.spring_demo.exceptions.NotFoundException;
 import users.rishik.spring_demo.services.MentorService;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,6 +26,15 @@ public class MentorController {
     public ResponseEntity<?> addMentor(@RequestBody @Valid Mentor mentor){
         try {
             return ResponseEntity.ok(this.mentorService.addMentor(mentor));
+        } catch (Exception e){
+            return ResponseEntity.internalServerError().body(Map.of("Error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/addAll")
+    public ResponseEntity<?> addAllMentors(@RequestBody List<Mentor> mentors){
+        try {
+            return ResponseEntity.ok(this.mentorService.addAllMentor(mentors));
         } catch (Exception e){
             return ResponseEntity.internalServerError().body(Map.of("Error", e.getMessage()));
         }

@@ -1,6 +1,5 @@
 package users.rishik.spring_demo.Controllers;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +10,8 @@ import users.rishik.spring_demo.exceptions.NotFoundException;
 import users.rishik.spring_demo.mappers.EnrolmentMapper;
 import users.rishik.spring_demo.services.EnrolmentService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -34,6 +35,18 @@ public class EnrolmentController {
         }
     }
 
+    @PostMapping("/addAll")
+    public ResponseEntity<?> addAllEnrolment(@RequestBody List<EnrolmentDto> dtos){
+        List<Enrolment> enrolments = new ArrayList<>(dtos.size());
+        try {
+            for(EnrolmentDto dto: dtos)
+                enrolments.add(this.enrolmentMapper.mapToModel(dto));
+            return new ResponseEntity<>(this.enrolmentService.addAllEnrolments(enrolments), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/find/{enrolmentId}")
     public ResponseEntity<?> getEnrolment(@PathVariable long enrolmentId){
         try {
@@ -51,6 +64,18 @@ public class EnrolmentController {
             this.enrolmentService.deleteEnrolment(enrolmentId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/findByCourse/{courseId}")
+    public ResponseEntity<?> getEnrolmentByCourse(@PathVariable long courseId){
+        try{
+            List<Enrolment> enrolments = this.enrolmentService.getEnrolmentByCourse(courseId);
+            if (enrolments.isEmpty()){
+                return new ResponseEntity<>(Map.of("Error", "Couldn't find any enrolments with specified course"), HttpStatus.NOT_FOUND);
+            } else return ResponseEntity.ok(enrolments);
+        } catch (Exception e){
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }

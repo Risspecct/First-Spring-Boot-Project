@@ -8,6 +8,8 @@ import users.rishik.spring_demo.exceptions.MaxCapacityException;
 import users.rishik.spring_demo.exceptions.NotFoundException;
 import users.rishik.spring_demo.respositories.EnrolmentRepository;
 
+import java.util.List;
+
 @Service
 public class EnrolmentService {
     private final EnrolmentRepository enrolmentRepository;
@@ -18,13 +20,13 @@ public class EnrolmentService {
     }
 
     public Enrolment addEnrolment(Enrolment enrolment){
-        if (enrolment.getEnrolmentDate().isAfter(enrolment.getCourse().getStartDate())){
-            throw new InvalidDateException("Invalid Enrollment date");
-        }
-        if (this.enrolmentRepository.countByCourse(enrolment.getCourse()) + 1 >= enrolment.getCourse().getCapacity()){
-            throw new MaxCapacityException("No seats available in this course");
-        }
+        this.validate(enrolment);
         return this.enrolmentRepository.save(enrolment);
+    }
+
+    public List<Enrolment> addAllEnrolments(List<Enrolment> enrolments){
+        for (Enrolment enrolment: enrolments) this.validate(enrolment);
+        return this.enrolmentRepository.saveAll(enrolments);
     }
 
     public Enrolment getEnrolment(long enrolmentId){
@@ -33,5 +35,18 @@ public class EnrolmentService {
 
     public void deleteEnrolment(long enrolmentId){
         this.enrolmentRepository.deleteById(enrolmentId);
+    }
+
+    public List<Enrolment> getEnrolmentByCourse(long courseId){
+        return this.enrolmentRepository.findByCourseId(courseId);
+    }
+
+    private void validate(Enrolment enrolment){
+        if (enrolment.getEnrolmentDate().isAfter(enrolment.getCourse().getStartDate())){
+            throw new InvalidDateException("Invalid Enrollment date");
+        }
+        if (this.enrolmentRepository.countByCourse(enrolment.getCourse()) + 1 >= enrolment.getCourse().getCapacity()){
+            throw new MaxCapacityException("No seats available in this course, course name: " + enrolment.getCourse().getName() + " course id: " + enrolment.getCourse().getId());
+        }
     }
 }

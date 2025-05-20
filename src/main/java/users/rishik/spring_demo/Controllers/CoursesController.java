@@ -11,6 +11,8 @@ import users.rishik.spring_demo.exceptions.NotFoundException;
 import users.rishik.spring_demo.mappers.CourseMapper;
 import users.rishik.spring_demo.services.CoursesService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,7 +28,7 @@ public class CoursesController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid CourseDto courseDto){
+    public ResponseEntity<?> addCourse(@RequestBody @Valid CourseDto courseDto){
         try {
             Course course = this.courseMapper.mapToModel(courseDto);
             return new ResponseEntity<>(this.coursesService.addCourse(course), HttpStatus.CREATED);
@@ -35,6 +37,19 @@ public class CoursesController {
         }
     }
 
+
+    @PostMapping("/addAll")
+    public ResponseEntity<?> addAllCourses(@RequestBody @Valid List<CourseDto> courseDtos){
+        try {
+            List<Course> courses = new ArrayList<>();
+            for (CourseDto courseDto : courseDtos) {
+                courses.add(this.courseMapper.mapToModel(courseDto));
+            }
+            return new ResponseEntity<>(this.coursesService.addAllCourses(courses), HttpStatus.CREATED);
+        } catch (Exception e){
+            return ResponseEntity.internalServerError().body(Map.of("Error", e.getMessage()));
+        }
+    }
     @GetMapping("/find/{courseId}")
     public ResponseEntity<?> findCourseById(@PathVariable long courseId){
         try {

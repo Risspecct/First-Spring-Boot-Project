@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import users.rishik.spring_demo.entities.Student;
 import users.rishik.spring_demo.respositories.StudentRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,6 +23,10 @@ public class StudentService
     public Student addStudent(Student student)
     {
         return studentRepository.save(student);
+    }
+
+    public List<Student> addAllStudents(List<Student> students){
+        return this.studentRepository.saveAll(students);
     }
 
     public Student getStudentById(long StudentId)
