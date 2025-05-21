@@ -82,4 +82,15 @@ public class CoursesController {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
+
+    @GetMapping("/{mentorId}/summary")
+    public ResponseEntity<?> getAllCourses(@PathVariable long mentorId){
+        try {
+            return ResponseEntity.ok(this.coursesService.getCoursesByMentor(mentorId));
+        } catch (NotFoundException e){
+            return new ResponseEntity<>(Map.of("Error", e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
 }

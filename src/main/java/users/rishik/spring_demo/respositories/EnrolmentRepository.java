@@ -5,16 +5,19 @@ import org.springframework.stereotype.Repository;
 import users.rishik.spring_demo.entities.Enrolment;
 import users.rishik.spring_demo.entities.Course;
 import users.rishik.spring_demo.entities.Student;
+import users.rishik.spring_demo.enums.EnrolmentStatus;
+import users.rishik.spring_demo.projections.EnrolmentView;
 
 import java.util.List;
 
 @Repository
 public interface EnrolmentRepository extends JpaRepository<Enrolment, Long> {
-//    List<Course> findByCourse(Course course); //Can fetch all the rows with same course automatically
 
     long countByCourse(Course course);
 
-    List<Enrolment> findByStudent(Student student);
+    List<EnrolmentView> findByStudent(Student student);
 
-    List<Enrolment> findByCourseId(long courseId);
+    List<EnrolmentView> findByCourseId(long courseId);
+
+    List<EnrolmentView> findByStatusEquals(EnrolmentStatus status);
 }

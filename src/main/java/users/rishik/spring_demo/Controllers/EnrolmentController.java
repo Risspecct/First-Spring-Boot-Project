@@ -1,13 +1,16 @@
 package users.rishik.spring_demo.Controllers;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import users.rishik.spring_demo.dto.EnrolmentDto;
 import users.rishik.spring_demo.entities.Enrolment;
+import users.rishik.spring_demo.enums.EnrolmentStatus;
 import users.rishik.spring_demo.exceptions.NotFoundException;
 import users.rishik.spring_demo.mappers.EnrolmentMapper;
+import users.rishik.spring_demo.projections.EnrolmentView;
 import users.rishik.spring_demo.services.EnrolmentService;
 
 import java.util.ArrayList;
@@ -69,14 +72,26 @@ public class EnrolmentController {
     }
 
     @GetMapping("/findByCourse/{courseId}")
-    public ResponseEntity<?> getEnrolmentByCourse(@PathVariable long courseId){
+    public ResponseEntity<?> getEnrolmentsByCourse(@PathVariable long courseId){
         try{
-            List<Enrolment> enrolments = this.enrolmentService.getEnrolmentByCourse(courseId);
+            List<EnrolmentView> enrolments = this.enrolmentService.getEnrolmentsByCourse(courseId);
             if (enrolments.isEmpty()){
-                return new ResponseEntity<>(Map.of("Error", "Couldn't find any enrolments with specified course"), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(Map.of("Error", "Couldn't find any enrolments with course id: " + courseId), HttpStatus.NOT_FOUND);
             } else return ResponseEntity.ok(enrolments);
         } catch (Exception e){
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
+
+    @GetMapping("/findByStatus/{status}")
+    public ResponseEntity<?> getEnrolmentByStatus(@PathVariable EnrolmentStatus status){
+        try {
+            List<EnrolmentView> enrolments = this.enrolmentService.findEnrolmentByStatus(status);
+            if (enrolments.isEmpty()) return new ResponseEntity<>(Map.of("Error", "No enrolments found with status: " + status), HttpStatus.NOT_FOUND);
+            else return ResponseEntity.ok(enrolments);
+        } catch (Exception e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
 }

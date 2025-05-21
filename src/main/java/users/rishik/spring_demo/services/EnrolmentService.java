@@ -3,9 +3,11 @@ package users.rishik.spring_demo.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import users.rishik.spring_demo.entities.Enrolment;
+import users.rishik.spring_demo.enums.EnrolmentStatus;
 import users.rishik.spring_demo.exceptions.InvalidDateException;
 import users.rishik.spring_demo.exceptions.MaxCapacityException;
 import users.rishik.spring_demo.exceptions.NotFoundException;
+import users.rishik.spring_demo.projections.EnrolmentView;
 import users.rishik.spring_demo.respositories.EnrolmentRepository;
 
 import java.util.List;
@@ -37,7 +39,7 @@ public class EnrolmentService {
         this.enrolmentRepository.deleteById(enrolmentId);
     }
 
-    public List<Enrolment> getEnrolmentByCourse(long courseId){
+    public List<EnrolmentView> getEnrolmentsByCourse(long courseId){
         return this.enrolmentRepository.findByCourseId(courseId);
     }
 
@@ -48,5 +50,9 @@ public class EnrolmentService {
         if (this.enrolmentRepository.countByCourse(enrolment.getCourse()) + 1 >= enrolment.getCourse().getCapacity()){
             throw new MaxCapacityException("No seats available in this course, course name: " + enrolment.getCourse().getName() + " course id: " + enrolment.getCourse().getId());
         }
+    }
+
+    public List<EnrolmentView> findEnrolmentByStatus(EnrolmentStatus status){
+        return this.enrolmentRepository.findByStatusEquals(status);
     }
 }

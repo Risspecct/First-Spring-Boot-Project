@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import users.rishik.spring_demo.entities.Course;
 import users.rishik.spring_demo.exceptions.NotFoundException;
+import users.rishik.spring_demo.projections.CourseView;
 import users.rishik.spring_demo.respositories.CoursesRepository;
 
 import java.util.List;
@@ -29,6 +30,12 @@ public class CoursesService {
     public Course getcourse(long courseId){
         Optional<Course> course = this.coursesRepository.findById(courseId);
         return course.orElseThrow(() -> new NotFoundException("Course with id: " + courseId + " not found"));
+    }
+
+    public List<CourseView> getCoursesByMentor(long mentorId){
+        List<CourseView> courses = this.coursesRepository.findByMentorId(mentorId);
+        if (courses.isEmpty()) throw new NotFoundException("Courses with mentor id: " + mentorId + " not found");
+        return courses;
     }
 
     public void deleteCourse(long courseId){
