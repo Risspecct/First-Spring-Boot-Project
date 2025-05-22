@@ -1,0 +1,24 @@
+*ENROLMENT ENTITY*
+{
+"enrolmentDate" : yyyy-mm-ddThh:mm:ss,
+"studentId": long,
+"courseId": long,
+"status": ACTIVE/CANCELLED/COMPLETE
+}
+
+*ADD ENROLMENT OBJECT*
+/enrolment/add
+/enrolment/addAll
+
+*FIND ENROLMENT OBJECT*
+/enrolment/find/{enrolmentId}
+/enrolment/findByCourse/{courseId}
+/enrolment/findByStudent/{studentId}
+/enrolment/findByStatus/{status}
+
+*UPDATE ENROLMENT OBJECT*
+/enrolment/update/{enrolmentId}/status
+RequestBody: status
+
+*DELETE ENROLMENT OBJECT*
+/enrolment/delete/{enrolmentId}

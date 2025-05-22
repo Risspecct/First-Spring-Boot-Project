@@ -1,9 +1,11 @@
 package users.rishik.spring_demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import users.rishik.spring_demo.dto.StudentDto;
 import users.rishik.spring_demo.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 import users.rishik.spring_demo.entities.Student;
+import users.rishik.spring_demo.projections.StudentView;
 import users.rishik.spring_demo.respositories.StudentRepository;
 
 import java.util.List;
@@ -42,10 +44,16 @@ public class StudentService
         this.studentRepository.deleteById(StudentId);
     }
 
-    public Student updateStudent(Student student, long studentId){
+    public Student updateStudent(StudentDto student, long studentId){
         Student existingStudent = this.getStudentById(studentId);
-        existingStudent.setFname(student.getFname());
-        existingStudent.setLname(student.getLname());
-        return studentRepository.save(existingStudent);
+        if (student.getFname() != null) existingStudent.setFname(student.getFname());
+        if (student.getLname() != null) existingStudent.setLname(student.getLname());
+        if (student.getEmail() != null) existingStudent.setEmail(student.getEmail());
+        if (student.getPassword() != null) existingStudent.setPassword(student.getPassword());
+        return this.studentRepository.save(existingStudent);
+    }
+
+    public List<StudentView> getAllStudents(){
+        return this.studentRepository.findAllBy();
     }
 }

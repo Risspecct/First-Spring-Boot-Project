@@ -55,4 +55,8 @@ public class CoursesService {
         return this.coursesRepository.save(course1);
     }
 
+    public List<CourseView> getAllCourses(){
+        return this.coursesRepository.findAllBy();
+    }
+
 }

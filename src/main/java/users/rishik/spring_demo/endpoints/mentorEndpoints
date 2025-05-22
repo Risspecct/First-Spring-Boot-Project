@@ -1,0 +1,26 @@
+*MENTOR ENTITY*
+{
+"firstName" : String,
+"lastName" : String,
+"company" : String,
+"yearsOfExperience" : float (>0, <50)
+}
+
+*ADD MENTOR OBJECT*
+
+/mentor/add
+/mentor/addAll
+
+*GET MENTOR OBJECT*
+
+/mentor/find/{mentorId}
+/mentor/find/all
+
+*UPDATE MENTOR OBJECT*
+
+/mentor/update/{mentorId}
+RequestBody : MentorDto
+
+*DELETE MENTOR OBJECT*
+
+/mentor/delete/{mentorid}

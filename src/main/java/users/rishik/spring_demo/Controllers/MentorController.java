@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import users.rishik.spring_demo.dto.MentorDto;
 import users.rishik.spring_demo.entities.Mentor;
 import users.rishik.spring_demo.exceptions.NotFoundException;
+import users.rishik.spring_demo.projections.MentorView;
 import users.rishik.spring_demo.services.MentorService;
 
 import java.util.List;
@@ -51,8 +53,19 @@ public class MentorController {
         }
     }
 
+    @GetMapping("/find/all")
+    public ResponseEntity<?> getAllMentors(){
+        try {
+            List<MentorView> mentors = this.mentorService.getAllMentors();
+            if (mentors.isEmpty()) return new ResponseEntity<>(Map.of("Error", "No mentors found in database"), HttpStatus.NOT_FOUND);
+            else return ResponseEntity.ok(mentors);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
     @PutMapping("/update/{mentorId}")
-    public ResponseEntity<?>  updateMentor(@PathVariable long mentorId, @RequestBody @Valid Mentor mentor){
+    public ResponseEntity<?>  updateMentor(@PathVariable long mentorId, @RequestBody @Valid MentorDto mentor){
         try {
             return ResponseEntity.ok(this.mentorService.updateMentor(mentorId, mentor));
         } catch (NotFoundException e) {
@@ -63,7 +76,7 @@ public class MentorController {
     }
 
     @DeleteMapping("/delete/{mentorId}")
-    public ResponseEntity<?> deleteMentor(@PathVariable long mentorId){
+    public ResponseEntity<?> deleteMentor(@PathVariable long mentorId) {
         try {
             this.mentorService.deleteMentorById(mentorId);
             return ResponseEntity.ok().build();

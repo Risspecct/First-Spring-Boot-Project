@@ -1,0 +1,26 @@
+*STUDENT ENTITY*
+{
+"fname" : String,
+"lname" : String,
+"email" : email,
+"password": String
+}
+
+*TO ADD STUDENT OBJECT*
+
+/student/add
+/student/addAll
+
+*GET STUDENT OBBJECT*
+
+/stduent/find/{sid}
+/student/find/all
+
+*UPDATE STUDENT OBJECT*
+
+/student/update/{studentId}
+RequestBody: StudentDto
+
+*DELETE STUDENT OBJECT*
+
+/student/delete/{studentId}

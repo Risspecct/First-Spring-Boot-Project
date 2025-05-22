@@ -13,11 +13,13 @@ import java.util.List;
 @Repository
 public interface EnrolmentRepository extends JpaRepository<Enrolment, Long> {
 
-    long countByCourse(Course course);
+    long countByCourseAndStatus(Course course, EnrolmentStatus status);
 
-    List<EnrolmentView> findByStudent(Student student);
+    List<EnrolmentView> findByStudentId(long studentId);
 
     List<EnrolmentView> findByCourseId(long courseId);
 
     List<EnrolmentView> findByStatusEquals(EnrolmentStatus status);
+
+//    List<EnrolmentView> findAllBy();
 }

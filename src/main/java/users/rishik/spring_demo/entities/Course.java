@@ -1,8 +1,6 @@
 package users.rishik.spring_demo.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 
 import java.time.LocalDateTime;
 import lombok.Getter;

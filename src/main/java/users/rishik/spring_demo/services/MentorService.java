@@ -2,8 +2,10 @@ package users.rishik.spring_demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import users.rishik.spring_demo.dto.MentorDto;
 import users.rishik.spring_demo.entities.Mentor;
 import users.rishik.spring_demo.exceptions.NotFoundException;
+import users.rishik.spring_demo.projections.MentorView;
 import users.rishik.spring_demo.respositories.MentorRepository;
 
 import java.util.List;
@@ -33,17 +35,21 @@ public class MentorService {
         return this.mentorRepository.saveAll(mentors);
     }
 
-    public Mentor updateMentor(long mentorId, Mentor mentor){
+    public Mentor updateMentor(long mentorId, MentorDto mentor){
         Mentor existingMentor = this.getMentorById(mentorId);
-        existingMentor.setFirstName(mentor.getFirstName());
-        existingMentor.setLastName(mentor.getLastName());
-        existingMentor.setCompany(mentor.getCompany());
-        existingMentor.setYearsOfExperience(mentor.getYearsOfExperience());
-        existingMentor.setId(mentor.getId());
+        if (mentor.getFirstName() != null) existingMentor.setFirstName(mentor.getFirstName());
+        if (mentor.getLastName() != null) existingMentor.setLastName(mentor.getLastName());
+        if (mentor.getCompany() != null) existingMentor.setCompany(mentor.getCompany());
+        if (mentor.getYearsOfExperience() != existingMentor.getYearsOfExperience())
+            existingMentor.setYearsOfExperience(mentor.getYearsOfExperience());
         return mentorRepository.save(existingMentor);
     }
 
     public void deleteMentorById(long mentorId){
-        mentorRepository.deleteById(mentorId);
+        this.mentorRepository.deleteById(mentorId);
+    }
+
+    public List<MentorView> getAllMentors(){
+        return this.mentorRepository.getAllBy();
     }
 }

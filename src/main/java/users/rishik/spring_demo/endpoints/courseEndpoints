@@ -1,0 +1,26 @@
+*COURSE ENTITY*
+{
+"name": String,
+"price": double,
+"capacity": int,
+"noOfDays": int,
+"startDate": yyyy-mm-ddTHH:mm:ss,
+"description": String(nullable),
+"mentorId": long,
+}
+
+*ADD COURSE OBJECT*
+/courses/add
+/courses/addAll
+
+*FIND COURSE OBJECT*
+/courses/find/{courseId}
+/courses/mentor/{mentorId}
+/courses/find/all
+
+*UPDATE COURSE OBJECT*
+/courses/update/{courseId}
+RequestBody : CourseDto
+
+*DELETE COURSE OBJECT*
+/courses/delete/{courseId}

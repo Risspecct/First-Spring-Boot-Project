@@ -35,24 +35,35 @@ public class EnrolmentService {
         return this.enrolmentRepository.findById(enrolmentId).orElseThrow(()-> new NotFoundException("Enrolment with id: " + enrolmentId + " not found"));
     }
 
-    public void deleteEnrolment(long enrolmentId){
-        this.enrolmentRepository.deleteById(enrolmentId);
-    }
-
     public List<EnrolmentView> getEnrolmentsByCourse(long courseId){
         return this.enrolmentRepository.findByCourseId(courseId);
+    }
+
+    public List<EnrolmentView> findEnrolmentByStatus(EnrolmentStatus status){
+        return this.enrolmentRepository.findByStatusEquals(status);
+    }
+
+    public List<EnrolmentView> findEnrolmentByStudendId(long studentId){
+        return this.enrolmentRepository.findByStudentId(studentId);
+    }
+
+    public Enrolment updateEnrolmentStatus(long enrolmentId, EnrolmentStatus status){
+        Enrolment enrolment = this.enrolmentRepository.findById(enrolmentId)
+                .orElseThrow(() -> new NotFoundException("No enrolment found with id: " + enrolmentId));
+        enrolment.setStatus(status);
+        return this.enrolmentRepository.save(enrolment);
+    }
+
+    public void deleteEnrolment(long enrolmentId){
+        this.enrolmentRepository.deleteById(enrolmentId);
     }
 
     private void validate(Enrolment enrolment){
         if (enrolment.getEnrolmentDate().isAfter(enrolment.getCourse().getStartDate())){
             throw new InvalidDateException("Invalid Enrollment date");
         }
-        if (this.enrolmentRepository.countByCourse(enrolment.getCourse()) + 1 >= enrolment.getCourse().getCapacity()){
+        if (this.enrolmentRepository.countByCourseAndStatus(enrolment.getCourse(), EnrolmentStatus.ACTIVE) + 1 >= enrolment.getCourse().getCapacity()){
             throw new MaxCapacityException("No seats available in this course, course name: " + enrolment.getCourse().getName() + " course id: " + enrolment.getCourse().getId());
         }
-    }
-
-    public List<EnrolmentView> findEnrolmentByStatus(EnrolmentStatus status){
-        return this.enrolmentRepository.findByStatusEquals(status);
     }
 }

@@ -9,6 +9,7 @@ import users.rishik.spring_demo.dto.CourseDto;
 import users.rishik.spring_demo.entities.Course;
 import users.rishik.spring_demo.exceptions.NotFoundException;
 import users.rishik.spring_demo.mappers.CourseMapper;
+import users.rishik.spring_demo.projections.CourseView;
 import users.rishik.spring_demo.services.CoursesService;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class CoursesController {
 
 
     @PostMapping("/addAll")
-    public ResponseEntity<?> addAllCourses(@RequestBody @Valid List<CourseDto> courseDtos){
+    public ResponseEntity<?> addAllCourses(@RequestBody @Valid List<@Valid CourseDto> courseDtos){
         try {
             List<Course> courses = new ArrayList<>();
             for (CourseDto courseDto : courseDtos) {
@@ -56,6 +57,28 @@ public class CoursesController {
             return ResponseEntity.ok(this.coursesService.getcourse(courseId));
         } catch (NotFoundException e){
             return new ResponseEntity<>(Map.of("Error", e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/mentor/{mentorId}")
+    public ResponseEntity<?> getCoursesByMentor(@PathVariable long mentorId){
+        try {
+            return ResponseEntity.ok(this.coursesService.getCoursesByMentor(mentorId));
+        } catch (NotFoundException e){
+            return new ResponseEntity<>(Map.of("Error", e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/find/all")
+    public ResponseEntity<?> getAllCourses(){
+        try {
+            List<CourseView> courses = this.coursesService.getAllCourses();
+            if (courses.isEmpty()) return new ResponseEntity<>(Map.of("Error", "No courses found"), HttpStatus.NOT_FOUND);
+            else return ResponseEntity.ok(courses);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
@@ -83,14 +106,4 @@ public class CoursesController {
         }
     }
 
-    @GetMapping("/{mentorId}/summary")
-    public ResponseEntity<?> getAllCourses(@PathVariable long mentorId){
-        try {
-            return ResponseEntity.ok(this.coursesService.getCoursesByMentor(mentorId));
-        } catch (NotFoundException e){
-            return new ResponseEntity<>(Map.of("Error", e.getMessage()), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
-    }
 }
