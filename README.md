@@ -5,22 +5,30 @@ This is a backend system for managing courses, mentors, students, and enrolments
 ## 📂 Project Structure
 
 ```
-src/
-└── main/
-    ├── java/
-    │   └── users.rishik.spring_demo/
-    │       ├── Controllers/
-    │       ├── dto/
-    │       ├── entities/
-    │       ├── enums/
-    │       ├── exceptions/
-    │       ├── mappers/
-    │       ├── projections/
-    │       ├── repositories/
-    │       ├── services/
-    │       └── SpringDemoApplication.java
-    └── resources/
-        └── application.properties
+.
+├── .mvn/
+│   └── wrapper/
+├── src/
+│   └── main/
+│       ├── java/
+│       │   └── users.rishik.spring_demo/
+│       │       ├── Controllers/
+│       │       ├── dto/
+│       │       ├── entities/
+│       │       ├── enums/
+│       │       ├── exceptions/
+│       │       ├── mappers/
+│       │       ├── projections/
+│       │       ├── repositories/
+│       │       ├── services/
+│       │       └── SpringDemoApplication.java
+│       └── resources/
+│           └── application.properties
+├── .gitignore
+├── .gitattributes
+├── mvnw
+├── mvnw.cmd
+└── pom.xml
 ```
 
 ## 🚀 Technologies Used
@@ -85,10 +93,31 @@ src/
 - `PUT /enrolment/update/{enrolmentId}/status`
 - `DELETE /enrolment/delete/{enrolmentId}`
 
-### 🔹 Miscellaneous
+## ⚙️ Project Configuration
 
-- `GET /add_numbers?a=1&b=2`
-- `GET /mul_numbers?a=3&b=4`
+### `pom.xml`
+Defines project metadata, Java version, and dependencies including:
+- Spring Boot starters (Web, JPA)
+- Lombok
+- H2 / MySQL Connector
+- Validation API
+
+### `.gitignore`
+Specifies intentionally untracked files to ignore (e.g., `target/`, `.idea/`, `.env`).
+
+### `mvnw` / `mvnw.cmd`
+Maven Wrapper scripts to build the project without requiring Maven pre-installed.
+
+### `application.properties`
+Configuration file typically used to define database URL, credentials, Hibernate DDL settings, server port, etc.
+
+Example:
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/course_db
+spring.datasource.username=root
+spring.datasource.password=yourpassword
+spring.jpa.hibernate.ddl-auto=update
+```
 
 ## ⚙️ Getting Started
 
@@ -103,7 +132,7 @@ src/
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/spring-course-management.git
+git clone https://github.com/Risspecct/Spring-Course-Management-System.git
 cd spring-course-management
 ```
 
